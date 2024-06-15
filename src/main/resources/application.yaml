@@ -1,0 +1,50 @@
+server:
+  port: 8085
+  error:
+    whitelabel:
+      enabled: false
+    include-stacktrace: always
+    path: /error
+    include-exception: 'true'
+  servlet:
+    context-path: /
+    encoding:
+      charset: 'UTF-8'
+      force-response: 'true'
+
+spring:
+  application:
+    name: food_storage
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${DATASOURCE_URL}
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
+    jpa:
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+      properties:
+        hibernate:
+          default_schema: public
+          format_sql: true
+          jdbc:
+            time_zone: UTC
+      hibernate:
+        naming:
+          physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+        ddl-auto: validate
+      show-sql: ${SHOW_SQL:false}
+    liquibase:
+      enabled: ${LIQUIBASE_ENABLED:false}
+      drop-first: ${LIQUIBASE_DROP_FIRST:false}
+      change-log: ${LIQUIBASE_CHANGE_LOG:db/changelog/master.xml}
+      default-schema: public
+
+logging:
+  level:
+    org:
+      springframework:
+        security: ${LOGGING_LEVEL_SEC:INFO}
+    root: ${LOGGING_LEVEL_ROOT:INFO}
+    ru.vsk.origami: ${LOGGING_LEVEL_ORIGAMI:DEBUG}
+  swagger-ui:
+    docExpansion: none
