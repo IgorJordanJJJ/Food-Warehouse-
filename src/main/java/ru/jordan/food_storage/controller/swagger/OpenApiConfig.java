@@ -1,4 +1,4 @@
-package ru.jordan.food_storage.controller;
+package ru.jordan.food_storage.controller.swagger;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
@@ -6,12 +6,12 @@ import io.swagger.v3.oas.annotations.info.Info;
 
 @OpenAPIDefinition(
         info = @Info(
-                title = "Loyalty System Api",
-                description = "Loyalty System", version = "1.0.0",
+                title = "Food storage",
+                description = "It is one of the few microservices to create an app to systematize nutrition and track food intake.", version = "1.0.0",
                 contact = @Contact(
                         name = "Igor Jordan",
-                        email = "igorjoran210@gmail.com",
-                        url = ""
+                        email = "igorjordan210@gmail.com",
+                        url = "null"
                 )
         )
 )

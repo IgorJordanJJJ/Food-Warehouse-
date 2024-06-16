@@ -1,34 +1,28 @@
-package ru.jordan.food_storage.model;
+package ru.jordan.food_storage.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_DEFAULT;
+
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-@Entity
-@Data
-@Schema(description = "Категория продукта")
-public class Category {
+@Getter
+@Setter
+@JsonInclude(NON_DEFAULT)
+public class CategoryDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Schema(description = "Идентификатор категории", example = "1", required = true)
     @Hidden
+    @Schema(description = "Идентификатор категории", example = "1", required = true)
     private Long id;
 
     @NotBlank(message = "Название категории обязательно")
@@ -41,12 +35,10 @@ public class Category {
     private String description;
 
     @Hidden
-    @CreatedDate
     @Schema(description = "Дата создания категории", example = "2024-01-01T12:00:00")
     private LocalDateTime createdDate;
 
     @Hidden
-    @LastModifiedDate
     @Schema(description = "Дата последнего обновления категории", example = "2024-01-01T12:00:00")
     private LocalDateTime lastUpdatedDate;
 

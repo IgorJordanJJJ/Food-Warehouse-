@@ -20,24 +20,24 @@ spring:
     url: ${DATASOURCE_URL}
     username: ${DATASOURCE_USERNAME}
     password: ${DATASOURCE_PASSWORD}
-    jpa:
-      database-platform: org.hibernate.dialect.PostgreSQLDialect
-      properties:
-        hibernate:
-          default_schema: public
-          format_sql: true
-          jdbc:
-            time_zone: UTC
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
       hibernate:
-        naming:
-          physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
-        ddl-auto: validate
-      show-sql: ${SHOW_SQL:false}
-    liquibase:
-      enabled: ${LIQUIBASE_ENABLED:false}
-      drop-first: ${LIQUIBASE_DROP_FIRST:false}
-      change-log: ${LIQUIBASE_CHANGE_LOG:db/changelog/master.xml}
-      default-schema: public
+        default_schema: public
+        format_sql: true
+        jdbc:
+          time_zone: UTC
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+      ddl-auto: validate
+    show-sql: ${SHOW_SQL:false}
+  liquibase:
+    enabled: ${LIQUIBASE_ENABLED:false}
+    drop-first: ${LIQUIBASE_DROP_FIRST:false}
+    change-log: ${LIQUIBASE_CHANGE_LOG:classpath:db/changelog/master.xml}
+    default-schema: public
 
 logging:
   level:

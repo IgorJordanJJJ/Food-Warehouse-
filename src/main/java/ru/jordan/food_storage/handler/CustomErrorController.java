@@ -13,19 +13,19 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
  */
 @Controller
 public class CustomErrorController {
-    @RequestMapping("/error")
-    public void handleError(HttpServletRequest request) {
-        Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
-        String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request)
-                .replacePath(null)
-                .build()
-                .toUriString();
-        String message = "Resource not found. Check documentation: " + baseUrl + "/swagger-ui/index.html";
-        if (status != null) {
-            int statusCode = Integer.parseInt(status.toString());
-            if (statusCode == HttpStatus.NOT_FOUND.value()) {
-                throw new ResourceNotFoundException(message);
-            }
-        }
-    }
+//    @RequestMapping("/error")
+//    public void handleError(HttpServletRequest request) {
+//        Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
+//        String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request)
+//                .replacePath(null)
+//                .build()
+//                .toUriString();
+//        String message = "Resource not found. Check documentation: " + baseUrl + "/swagger-ui/index.html";
+//        if (status != null) {
+//            int statusCode = Integer.parseInt(status.toString());
+//            if (statusCode == HttpStatus.NOT_FOUND.value()) {
+//                throw new ResourceNotFoundException(message);
+//            }
+//        }
+//    }
 }
