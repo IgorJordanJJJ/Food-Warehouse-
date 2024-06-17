@@ -44,4 +44,10 @@ public class CategoryFacadeImpl implements CategoryFacade {
     public List<Category> findCategoriesByName(String name) {
         return categoryService.findCategoriesByName(name);
     }
+
+    @Override
+    @Transactional // Транзакция с поддержкой чтения и записи
+    public Category updateCategory(CategoryDto category) {
+        return categoryService.updateCategory(category);
+    }
 }

@@ -3,6 +3,9 @@ package ru.jordan.food_storage.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.jordan.food_storage.dto.CategoryDto;
@@ -16,15 +19,18 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
-public class CategoryServiceImpl implements CategoryService{
+@CacheConfig(cacheNames={"category"})
+public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
+
     @Override
     @Transactional
+    @CacheEvict(allEntries = true)
     public Category createCategory(CategoryDto categoryDto) {
-        if (categoryDto == null) {
-            throw new IllegalArgumentException("CategoryDto cannot be null");
+        if (categoryRepository.existsByName(categoryDto.getName())) {
+            throw new RuntimeException("Категория с таким именем уже существует");
         }
 
         Category category = modelMapper.map(categoryDto, Category.class);
@@ -33,6 +39,7 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
+    @Cacheable(key = "#id")
     @Transactional(readOnly = true)
     public Category getCategoryById(Long id) {
         Optional<Category> categoryOptional = categoryRepository.findById(id);
@@ -41,8 +48,9 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     @Transactional
-    public Category updateCategory(Long id, CategoryDto categoryDto) {
-        Optional<Category> optionalCategory = categoryRepository.findById(id);
+    @CacheEvict(allEntries = true)
+    public Category updateCategory(CategoryDto categoryDto) {
+        Optional<Category> optionalCategory = categoryRepository.findById(categoryDto.getId());
 
         if (optionalCategory.isPresent()) {
             Category existingCategory = optionalCategory.get();
@@ -51,12 +59,13 @@ public class CategoryServiceImpl implements CategoryService{
 
             return categoryRepository.save(existingCategory);
         } else {
-            throw new IllegalArgumentException("Category with id " + id + " not found");
+            throw new IllegalArgumentException("Category with id " + categoryDto.getId() + " not found");
         }
     }
 
     @Override
     @Transactional
+    @CacheEvict(allEntries = true)
     public void deleteCategory(Long id) {
         Optional<Category> categoryOptional = categoryRepository.findById(id);
 
@@ -70,12 +79,14 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable
     public List<Category> getAllCategories() {
         return categoryRepository.findAll();
     }
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable
     public List<Category> findCategoriesByName(String name) {
         if (name == null || name.trim().isEmpty()) {
             return categoryRepository.findAll();

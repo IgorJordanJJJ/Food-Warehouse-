@@ -1,6 +1,6 @@
 CREATE TABLE Category (
                           id BIGSERIAL PRIMARY KEY,
-                          name VARCHAR(100) NOT NULL,
+                          name VARCHAR(100) UNIQUE NOT NULL,
                           description VARCHAR(500),
                           created_date TIMESTAMP,
                           last_updated_date TIMESTAMP,
@@ -9,7 +9,7 @@ CREATE TABLE Category (
 
 CREATE TABLE Product (
                          id BIGSERIAL PRIMARY KEY,
-                         name VARCHAR(100) NOT NULL,
+                         name VARCHAR(100) UNIQUE NOT NULL,
                          description VARCHAR(500),
                          price DECIMAL(10, 2) CHECK (price > 0),
                          weight DECIMAL(10, 2) CHECK (weight > 0),

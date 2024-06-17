@@ -40,4 +40,12 @@ public interface CategoryFacade {
      * @return список категорий, найденных по имени
      */
     List<Category> findCategoriesByName(String name);
+
+    /**
+     * Обновление существующей категории.
+     * @param category данные для обновления категории
+     * @return обновленная категория
+     * @throws IllegalArgumentException если категория с указанным ID не найдена
+     */
+    Category updateCategory(CategoryDto category);
 }

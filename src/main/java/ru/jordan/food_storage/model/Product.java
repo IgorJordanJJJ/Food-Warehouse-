@@ -1,5 +1,6 @@
 package ru.jordan.food_storage.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
@@ -8,19 +9,25 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_DEFAULT;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
 @Entity
 @Data
+@JsonInclude(NON_DEFAULT)
+@EntityListeners(AuditingEntityListener.class)
 @Schema(description = "Детали продукта")
+@Table(name = "product",
+        uniqueConstraints = {@UniqueConstraint(columnNames = "name", name = "unique_category_name")}
+)
 public class Product {
 
     @Id
@@ -32,6 +39,7 @@ public class Product {
     @NotBlank(message = "Название обязательно")
     @Size(max = 100, message = "Название не должно превышать 100 символов")
     @Schema(description = "Название продукта", example = "Молоко", required = true)
+    @Column(unique = true) // Можно добавить unique = true для уникальности в рамках одной таблицы
     private String name;
 
     @Size(max = 500, message = "Описание не должно превышать 500 символов")

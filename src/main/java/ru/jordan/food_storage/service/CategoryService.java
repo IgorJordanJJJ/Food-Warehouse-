@@ -24,12 +24,11 @@ public interface CategoryService {
 
     /**
      * Обновление существующей категории.
-     * @param id ID категории для обновления
      * @param category данные для обновления категории
      * @return обновленная категория
      * @throws IllegalArgumentException если категория с указанным ID не найдена
      */
-    Category updateCategory(Long id, CategoryDto category);
+    Category updateCategory(CategoryDto category);
 
     /**
      * Удаление категории по ID.

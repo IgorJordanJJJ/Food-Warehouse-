@@ -24,7 +24,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @CrossOrigin
-@RequestMapping(value = "/branch", produces = "application/json")
+@RequestMapping(value = "/category", produces = "application/json")
 @ApiResponses(value = {
         @ApiResponse(
                 responseCode = "400",
@@ -59,23 +59,23 @@ public class CategoryController {
 
     @Operation(summary = "Создать новую категорию", description = "Создать новую категорию с указанными данными.")
     @PostMapping
-    public ResponseEntity<CategoryDto> createCategory(@Valid @Parameter(description = "Категоря продукта") @RequestBody CategoryDto category) {
-        categoryFacadeImpl.saveCategory(category);
+    public ResponseEntity<Category> createCategory(@Valid @Parameter(description = "Категоря продукта") @RequestBody CategoryDto categoryDto) {
+        Category category = categoryFacadeImpl.saveCategory(categoryDto);
         return ResponseEntity.ok(category);
     }
 
     @Operation(summary = "Обновить существующую категорию", description = "Обновить данные существующей категории по её ID.")
-    @PutMapping("/{id}")
-    public ResponseEntity<Category> updateCategory(@Parameter(description = "Идентификатор категории") @Min(0) @PathVariable Long id, @Valid @Parameter(description = "Категоря продукта") @RequestBody CategoryDto categoryDetails) {
-        Category updatedCategory = categoryFacadeImpl.getCategoryById(id);
+    @PutMapping
+    public ResponseEntity<Category> updateCategory(@Valid @Parameter(description = "Категоря продукта") @RequestBody CategoryDto categoryDetails) {
+        Category updatedCategory = categoryFacadeImpl.updateCategory(categoryDetails);
         return ResponseEntity.ok(updatedCategory);
     }
 
     @Operation(summary = "Удалить категорию", description = "Удалить существующую категорию по её ID.")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCategory(@Parameter(description = "Идентификатор категории") @Min(0) @PathVariable Long id) {
+    public ResponseEntity<String> deleteCategory(@Parameter(description = "Идентификатор категории") @Min(value = 0, message = "ID must be greater than or equal to 0") @PathVariable Long id) {
         categoryFacadeImpl.deleteCategory(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok("Category with ID " + id + " deleted successfully.");
     }
 
     @Operation(summary = "Поиск категорий по имени", description = "Поиск категорий по указанному имени.")
