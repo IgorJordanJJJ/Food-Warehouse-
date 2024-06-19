@@ -15,7 +15,7 @@ import org.apache.kafka.common.requests.ApiError;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.jordan.food_storage.dto.CategoryDto;
-import ru.jordan.food_storage.facade.CategoryFacadeImpl;
+import ru.jordan.food_storage.facade.category.CategoryFacadeImpl;
 import ru.jordan.food_storage.model.Category;
 
 import java.util.List;

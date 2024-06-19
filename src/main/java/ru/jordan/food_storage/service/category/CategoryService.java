@@ -1,19 +1,18 @@
-package ru.jordan.food_storage.service;
+package ru.jordan.food_storage.service.category;
 
 import ru.jordan.food_storage.dto.CategoryDto;
 import ru.jordan.food_storage.model.Category;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface CategoryService {
 
     /**
      * Создание новой категории.
-     * @param category данные для создания категории
+     * @param categoryDto данные для создания категории
      * @return созданная категория
      */
-    Category createCategory(CategoryDto category);
+    Category createCategory(CategoryDto categoryDto);
 
     /**
      * Получение категории по ID.
@@ -24,11 +23,11 @@ public interface CategoryService {
 
     /**
      * Обновление существующей категории.
-     * @param category данные для обновления категории
+     * @param categoryDto данные для обновления категории
      * @return обновленная категория
      * @throws IllegalArgumentException если категория с указанным ID не найдена
      */
-    Category updateCategory(CategoryDto category);
+    Category updateCategory(CategoryDto categoryDto);
 
     /**
      * Удаление категории по ID.

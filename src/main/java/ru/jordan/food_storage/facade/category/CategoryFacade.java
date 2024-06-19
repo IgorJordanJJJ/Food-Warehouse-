@@ -1,4 +1,4 @@
-package ru.jordan.food_storage.facade;
+package ru.jordan.food_storage.facade.category;
 
 import ru.jordan.food_storage.dto.CategoryDto;
 import ru.jordan.food_storage.model.Category;

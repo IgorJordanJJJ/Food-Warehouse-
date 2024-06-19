@@ -1,0 +1,184 @@
+scalar Long
+scalar Date
+scalar DateTime
+scalar BigDecimal
+
+# Тип GraphQL для Category
+type Category {
+    "Идентификатор категории"
+    id: Long
+
+    "Название категории"
+    name: String!
+
+    "Описание категории"
+    description: String!
+
+    "Дата создания категории"
+    createdDate: DateTime
+
+    "Дата последнего обновления категории"
+    lastUpdatedDate: DateTime
+
+    "Статус активности категории"
+    active: Boolean!
+}
+
+# Тип для ввода при создании или обновлении Category
+input CategoryInput {
+    "Название категории"
+    name: String!
+
+    "Описание категории"
+    description: String!
+
+    "Статус активности категории"
+    active: Boolean!
+}
+
+# Тип GraphQL для Product
+type Product {
+    "Уникальный идентификатор продукта"
+    id: Long!
+
+    "Название продукта"
+    name: String!
+
+    "Описание продукта"
+    description: String
+
+    "Цена продукта"
+    price: BigDecimal!
+
+    "Масса продукта"
+    weight: BigDecimal!
+
+    "Категория продукта"
+    category: Category
+
+    "Дата изготовления продукта"
+    manufactureDate: Date
+
+    "Дата окончания срока годности продукта"
+    expirationDate: Date
+
+    "Производитель продукта"
+    manufacturer: String
+
+    "Количество продукта на складе"
+    stockQuantity: Int
+
+    "Артикул продукта"
+    sku: String
+
+    "Бренд продукта"
+    brand: String
+
+    "Страна происхождения продукта"
+    countryOfOrigin: String
+
+    "Скидка на продукт"
+    discount: BigDecimal
+
+    "Доступность продукта"
+    available: Boolean!
+
+    "Дата и время создания записи о продукте"
+    createdDate: DateTime!
+
+    "Дата и время последнего обновления записи о продукте"
+    lastUpdatedDate: DateTime!
+}
+
+# Тип для ввода при создании или обновлении Product
+input ProductInput {
+    "Уникальный идентификатор продукта"
+    id: Long!
+
+    "Название продукта"
+    name: String!
+
+    "Описание продукта"
+    description: String
+
+    "Цена продукта"
+    price: BigDecimal!
+
+    "Масса продукта"
+    weight: BigDecimal!
+
+    "Идентификатор категории продукта"
+    categoryId: Long
+
+    "Дата изготовления продукта"
+    manufactureDate: Date
+
+    "Дата окончания срока годности продукта"
+    expirationDate: Date
+
+    "Производитель продукта"
+    manufacturer: String
+
+    "Количество продукта на складе"
+    stockQuantity: Int
+
+    "Артикул продукта"
+    sku: String
+
+    "Бренд продукта"
+    brand: String
+
+    "Страна происхождения продукта"
+    countryOfOrigin: String
+
+    "Скидка на продукт"
+    discount: BigDecimal
+
+    "Доступность продукта"
+    available: Boolean
+}
+
+type Query {
+    "Получить категорию по ID"
+    getCategoryById(id: Long!): Category
+
+    "Получить категорию по названию"
+    findCategoriesByName(name: String!): [Category]
+
+    "Получить список всех категорий"
+    getAllCategories: [Category]
+
+    "Получить продукт по ID"
+    getProductById(id: Long!): Product
+
+    "Получить продукты по названию"
+    findProductsByName(name: String!): [Product]
+
+    "Получить список всех продуктов"
+    getAllProducts: [Product]
+}
+
+type Mutation {
+    "Создать новую категорию"
+    createCategory(input: CategoryInput!): Category
+
+    "Обновить существующую категорию"
+    updateCategory(input: CategoryInput!): Category
+
+    "Удалить категорию по ID"
+    deleteCategory(id: Long!): Boolean
+
+    "Создать новый продукт"
+    createProduct(input: ProductInput!): Product
+
+    "Обновить существующий продукт"
+    updateProduct(input: ProductInput!): Product
+
+    "Удалить продукт по ID"
+    deleteProduct(id: Long!): Boolean
+}
+
+
+
+
+

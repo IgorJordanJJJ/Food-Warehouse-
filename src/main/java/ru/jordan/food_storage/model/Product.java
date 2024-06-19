@@ -1,7 +1,6 @@
 package ru.jordan.food_storage.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -32,13 +31,12 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Schema(description = "Идентификатор продукта", example = "1", required = true)
-    @Hidden
+    @Schema(description = "Идентификатор продукта", example = "1")
     private Long id;
 
     @NotBlank(message = "Название обязательно")
     @Size(max = 100, message = "Название не должно превышать 100 символов")
-    @Schema(description = "Название продукта", example = "Молоко", required = true)
+    @Schema(description = "Название продукта", example = "Молоко")
     @Column(unique = true) // Можно добавить unique = true для уникальности в рамках одной таблицы
     private String name;
 
@@ -48,21 +46,21 @@ public class Product {
 
 //    @NotNull(message = "Цена обязательна")
     @DecimalMin(value = "0.0", inclusive = false, message = "Цена должна быть больше 0")
-    @Schema(description = "Цена продукта", example = "50.0", required = true)
+    @Schema(description = "Цена продукта", example = "50.0")
     private BigDecimal price;
 
 //    @NotNull(message = "Масса обязательна")
     @DecimalMin(value = "0.0", inclusive = false, message = "Масса должна быть больше 0")
-    @Schema(description = "Масса продукта", example = "1.0", required = true)
+    @Schema(description = "Масса продукта", example = "1.0")
     private BigDecimal weight;
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = true)
-    @Schema(description = "Категория продукта", required = true)
+    @Schema(description = "Категория продукта")
     private Category category;
 
 //    @NotNull(message = "Дата изготовления обязательна")
-    @Schema(description = "Дата изготовления продукта", example = "2024-01-01", required = true)
+    @Schema(description = "Дата изготовления продукта", example = "2024-01-01")
     private LocalDate manufactureDate;
 
     @Schema(description = "Срок годности продукта", example = "2025-01-01")
@@ -74,12 +72,12 @@ public class Product {
 
 //    @NotNull(message = "Количество на складе обязательно")
     @Min(value = 0, message = "Количество на складе должно быть больше или равно 0")
-    @Schema(description = "Количество продукта на складе", example = "100", required = true)
+    @Schema(description = "Количество продукта на складе", example = "100")
     private int stockQuantity;
 
 //    @NotBlank(message = "Артикул обязателен")
     @Size(max = 50, message = "Артикул не должен превышать 50 символов")
-    @Schema(description = "Артикул продукта", example = "SKU12345", required = true)
+    @Schema(description = "Артикул продукта", example = "SKU12345")
     private String sku;
 
 //    @Size(max = 200, message = "URL изображения не должен превышать 200 символов")
@@ -103,12 +101,10 @@ public class Product {
     private boolean available;
 
     @CreatedDate
-    @Hidden
     @Schema(description = "Дата создания продукта", example = "2024-01-01T12:00:00")
     private LocalDateTime createdDate;
 
     @LastModifiedDate
-    @Hidden
     @Schema(description = "Дата последнего обновления продукта", example = "2024-01-01T12:00:00")
     private LocalDateTime lastUpdatedDate;
 }

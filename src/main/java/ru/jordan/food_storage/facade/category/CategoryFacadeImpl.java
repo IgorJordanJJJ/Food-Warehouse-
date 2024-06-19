@@ -1,12 +1,13 @@
-package ru.jordan.food_storage.facade;
+package ru.jordan.food_storage.facade.category;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.jordan.food_storage.dto.CategoryDto;
+import ru.jordan.food_storage.facade.category.CategoryFacade;
 import ru.jordan.food_storage.model.Category;
-import ru.jordan.food_storage.service.CategoryServiceImpl;
+import ru.jordan.food_storage.service.category.CategoryServiceImpl;
 
 import java.util.List;
 

@@ -2,7 +2,6 @@ package ru.jordan.food_storage.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -33,13 +32,12 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Schema(description = "Идентификатор категории", example = "1", required = true)
-    @Hidden
+    @Schema(description = "Идентификатор категории", example = "1")
     private Long id;
 
     @NotBlank(message = "Название категории обязательно")
     @Size(min = 1, max = 100, message = "Название категории не должно превышать 100 символов")
-    @Schema(description = "Название категории", example = "Молочные продукты", required = true)
+    @Schema(description = "Название категории", example = "Молочные продукты")
     @Column(unique = true) // Можно добавить unique = true для уникальности в рамках одной таблицы
     private String name;
 
@@ -47,13 +45,11 @@ public class Category {
     @Schema(description = "Описание категории", example = "Категория для всех молочных продуктов")
     private String description;
 
-    @Hidden
     @CreatedDate
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @Schema(description = "Дата создания категории", example = "2024-01-01T12:00:00")
     private LocalDateTime createdDate;
 
-    @Hidden
     @LastModifiedDate
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @Schema(description = "Дата последнего обновления категории", example = "2024-01-01T12:00:00")

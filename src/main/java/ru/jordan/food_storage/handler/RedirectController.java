@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class RedirectController {
-
     @RequestMapping(value = "/{path}", method = RequestMethod.GET)
     public String redirect() {
         return "redirect:/swagger-ui/index.html";

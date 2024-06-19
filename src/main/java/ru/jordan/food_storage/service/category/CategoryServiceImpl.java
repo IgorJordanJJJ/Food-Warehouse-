@@ -1,4 +1,4 @@
-package ru.jordan.food_storage.service;
+package ru.jordan.food_storage.service.category;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.jordan.food_storage.dto.CategoryDto;
 import ru.jordan.food_storage.model.Category;
 import ru.jordan.food_storage.repository.CategoryRepository;
+import ru.jordan.food_storage.service.category.CategoryService;
 
 import java.util.List;
 import java.util.Optional;
