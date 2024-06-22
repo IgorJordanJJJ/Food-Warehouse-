@@ -5,8 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.jordan.food_storage.dto.ProductDto;
-import ru.jordan.food_storage.facade.product.ProductFacade;
-import ru.jordan.food_storage.model.Product;
 import ru.jordan.food_storage.service.product.ProductServiceImpl;
 
 import java.util.List;
@@ -20,19 +18,19 @@ public class ProductFacadeImpl implements ProductFacade {
     private final ProductServiceImpl productService;
 
     @Override
-    public Product getProductById(Long id) {
+    public ProductDto getProductById(Long id) {
         return productService.getProductById(id);
     }
 
     @Override
     @Transactional // Транзакция с поддержкой чтения и записи
-    public Product saveProduct(ProductDto productDto) {
+    public ProductDto saveProduct(ProductDto productDto) {
         return productService.createProduct(productDto);
     }
 
     @Override
     @Transactional // Транзакция с поддержкой чтения и записи
-    public Product updateProduct(ProductDto productDto) {
+    public ProductDto updateProduct(ProductDto productDto) {
         return productService.updateProduct(productDto);
     }
 
@@ -43,12 +41,12 @@ public class ProductFacadeImpl implements ProductFacade {
     }
 
     @Override
-    public List<Product> getAllProducts() {
+    public List<ProductDto> getAllProducts() {
         return productService.getAllProducts();
     }
 
     @Override
-    public List<Product> findProductsByName(String name) {
+    public List<ProductDto> findProductsByName(String name) {
         return productService.findProductsByName(name);
     }
 }

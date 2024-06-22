@@ -1,4 +1,4 @@
-package ru.jordan.food_storage.config;
+package ru.jordan.food_storage.config.minio;
 
 import io.minio.MinioClient;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,4 +1,4 @@
-package ru.jordan.food_storage.config;
+package ru.jordan.food_storage.config.app;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

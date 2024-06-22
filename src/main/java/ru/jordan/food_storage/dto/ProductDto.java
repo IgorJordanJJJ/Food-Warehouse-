@@ -10,6 +10,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import ru.jordan.food_storage.model.Category;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -23,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_DEFAULT;
 @Data
 @JsonInclude(NON_DEFAULT)
 @Schema(description = "Детали продукта")
-public class ProductDto {
+public class ProductDto implements Serializable {
 
     @Schema(description = "Идентификатор продукта", example = "1")
     private Long id;

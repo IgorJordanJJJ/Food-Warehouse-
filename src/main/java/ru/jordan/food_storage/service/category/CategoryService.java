@@ -1,7 +1,6 @@
 package ru.jordan.food_storage.service.category;
 
 import ru.jordan.food_storage.dto.CategoryDto;
-import ru.jordan.food_storage.model.Category;
 
 import java.util.List;
 
@@ -12,14 +11,14 @@ public interface CategoryService {
      * @param categoryDto данные для создания категории
      * @return созданная категория
      */
-    Category createCategory(CategoryDto categoryDto);
+    CategoryDto createCategory(CategoryDto categoryDto);
 
     /**
      * Получение категории по ID.
      * @param id ID категории
      * @return category с найденной категорией, или пустой, если категория не найдена
      */
-    Category getCategoryById(Long id);
+    CategoryDto getCategoryById(Long id);
 
     /**
      * Обновление существующей категории.
@@ -27,7 +26,7 @@ public interface CategoryService {
      * @return обновленная категория
      * @throws IllegalArgumentException если категория с указанным ID не найдена
      */
-    Category updateCategory(CategoryDto categoryDto);
+    CategoryDto updateCategory(CategoryDto categoryDto);
 
     /**
      * Удаление категории по ID.
@@ -40,12 +39,12 @@ public interface CategoryService {
      * Получение всех категорий.
      * @return список всех категорий
      */
-    List<Category> getAllCategories();
+    List<CategoryDto> getAllCategories();
 
     /**
      * Поиск категорий по имени.
      * @param name часть имени для поиска категорий
      * @return список категорий, найденных по имени
      */
-    List<Category> findCategoriesByName(String name);
+    List<CategoryDto> findCategoriesByName(String name);
 }

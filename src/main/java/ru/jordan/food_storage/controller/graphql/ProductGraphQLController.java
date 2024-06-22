@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
 import ru.jordan.food_storage.dto.ProductDto;
 import ru.jordan.food_storage.facade.product.ProductFacadeImpl;
-import ru.jordan.food_storage.model.Product;
 
 import java.util.List;
 
@@ -22,27 +21,27 @@ public class ProductGraphQLController {
 
     private final ProductFacadeImpl productFacadeImpl;
     @QueryMapping
-    public Product getProductById(@Argument Long id) {
+    public ProductDto getProductById(@Argument Long id) {
         return productFacadeImpl.getProductById(id);
     }
 
     @QueryMapping
-    public List<Product> findProductsByName(@Argument String name) {
+    public List<ProductDto> findProductsByName(@Argument String name) {
         return productFacadeImpl.findProductsByName(name);
     }
 
     @QueryMapping
-    public List<Product> getAllProducts() {
+    public List<ProductDto> getAllProducts() {
         return productFacadeImpl.getAllProducts();
     }
 
     @MutationMapping
-    public Product createProduct(@Argument @Valid ProductDto input) {
+    public ProductDto createProduct(@Argument @Valid ProductDto input) {
         return productFacadeImpl.saveProduct(input);
     }
 
     @MutationMapping
-    public Product updateProduct(@Argument @Valid ProductDto input) {
+    public ProductDto updateProduct(@Argument @Valid ProductDto input) {
         return productFacadeImpl.updateProduct(input);
     }
 

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
 import ru.jordan.food_storage.dto.CategoryDto;
 import ru.jordan.food_storage.facade.category.CategoryFacadeImpl;
-import ru.jordan.food_storage.model.Category;
 
 import java.util.List;
 
@@ -22,27 +21,27 @@ public class CategoryGraphQLController {
 
     private final CategoryFacadeImpl categoryFacadeImpl;
     @QueryMapping
-    public Category getCategoryById(@Argument Long id) {
+    public CategoryDto getCategoryById(@Argument Long id) {
         return categoryFacadeImpl.getCategoryById(id);
     }
 
     @QueryMapping
-    public List<Category> findCategoriesByName(@Argument String name) {
+    public List<CategoryDto> findCategoriesByName(@Argument String name) {
         return categoryFacadeImpl.findCategoriesByName(name);
     }
 
     @QueryMapping
-    public List<Category> getAllCategories() {
+    public List<CategoryDto> getAllCategories() {
         return categoryFacadeImpl.getAllCategories();
     }
 
     @MutationMapping
-    public Category createCategory(@Argument @Valid CategoryDto input) {
+    public CategoryDto createCategory(@Argument @Valid CategoryDto input) {
         return categoryFacadeImpl.saveCategory(input);
     }
 
     @MutationMapping
-    public Category updateCategory(@Argument @Valid CategoryDto input) {
+    public CategoryDto updateCategory(@Argument @Valid CategoryDto input) {
         return categoryFacadeImpl.updateCategory(input);
     }
 

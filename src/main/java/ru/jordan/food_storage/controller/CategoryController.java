@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.jordan.food_storage.dto.CategoryDto;
 import ru.jordan.food_storage.facade.category.CategoryFacadeImpl;
-import ru.jordan.food_storage.model.Category;
 
 import java.util.List;
 
@@ -46,28 +46,28 @@ public class CategoryController {
 
     @Operation(summary = "Получить все категории", description = "Получить список всех категорий.")
     @GetMapping
-    public List<Category> getAllCategories() {
+    public List<CategoryDto> getAllCategories() {
         return categoryFacadeImpl.getAllCategories();
     }
 
     @Operation(summary = "Получить категорию по ID", description = "Получить категорию по её ID.")
     @GetMapping("/{id}")
-    public ResponseEntity<Category> getCategoryById(@Parameter(description = "Идентификатор категории") @Min(0) @PathVariable Long id) {
-        Category category = categoryFacadeImpl.getCategoryById(id);
+    public ResponseEntity<CategoryDto> getCategoryById(@Parameter(description = "Идентификатор категории") @Min(0) @PathVariable Long id) {
+        CategoryDto category = categoryFacadeImpl.getCategoryById(id);
         return ResponseEntity.ok(category);
     }
 
     @Operation(summary = "Создать новую категорию", description = "Создать новую категорию с указанными данными.")
     @PostMapping
-    public ResponseEntity<Category> createCategory(@Valid @Parameter(description = "Категоря продукта") @RequestBody CategoryDto categoryDto) {
-        Category category = categoryFacadeImpl.saveCategory(categoryDto);
+    public ResponseEntity<CategoryDto> createCategory(@Valid @Parameter(description = "Категоря продукта") @RequestBody CategoryDto categoryDto) {
+        CategoryDto category = categoryFacadeImpl.saveCategory(categoryDto);
         return ResponseEntity.ok(category);
     }
 
     @Operation(summary = "Обновить существующую категорию", description = "Обновить данные существующей категории по её ID.")
     @PutMapping
-    public ResponseEntity<Category> updateCategory(@Valid @Parameter(description = "Категоря продукта") @RequestBody CategoryDto categoryDetails) {
-        Category updatedCategory = categoryFacadeImpl.updateCategory(categoryDetails);
+    public ResponseEntity<CategoryDto> updateCategory(@Valid @Parameter(description = "Категоря продукта") @RequestBody CategoryDto categoryDetails) {
+        CategoryDto updatedCategory = categoryFacadeImpl.updateCategory(categoryDetails);
         return ResponseEntity.ok(updatedCategory);
     }
 
@@ -80,8 +80,15 @@ public class CategoryController {
 
     @Operation(summary = "Поиск категорий по имени", description = "Поиск категорий по указанному имени.")
     @GetMapping("/search")
-    public ResponseEntity<List<Category>> findCategoriesByName(@Parameter(description = "Имя категории") @RequestParam String name) {
-        List<Category> categories = categoryFacadeImpl.findCategoriesByName(name);
+    public ResponseEntity<List<CategoryDto>> findCategoriesByName(@Parameter(description = "Имя категории") @RequestParam String name) {
+        List<CategoryDto> categories = categoryFacadeImpl.findCategoriesByName(name);
         return ResponseEntity.ok(categories);
     }
+
+    @Operation(summary = "Excel отчет", description = "Скачать Excel отчет всех категорий.")
+    @GetMapping("/export-to-excel")
+    public void exportIntoExcelFile(HttpServletResponse response) {
+        categoryFacadeImpl.getCategoriesExcel(response);
+    }
+
 }

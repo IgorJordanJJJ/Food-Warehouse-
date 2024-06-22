@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.jordan.food_storage.dto.ProductDto;
 import ru.jordan.food_storage.facade.product.ProductFacadeImpl;
-import ru.jordan.food_storage.model.Product;
 
 import java.util.List;
 
@@ -46,28 +45,28 @@ public class ProductController {
 
     @Operation(summary = "Получить все продукты", description = "Получить список всех продуктов.")
     @GetMapping
-    public List<Product> getAllProducts() {
+    public List<ProductDto> getAllProducts() {
         return productFacadeImpl.getAllProducts();
     }
 
     @Operation(summary = "Получить продукт по ID", description = "Получить продукт по его ID.")
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@Parameter(description = "Идентификатор продукта") @Min(0) @PathVariable Long id) {
-        Product product = productFacadeImpl.getProductById(id);
+    public ResponseEntity<ProductDto> getProductById(@Parameter(description = "Идентификатор продукта") @Min(0) @PathVariable Long id) {
+        ProductDto product = productFacadeImpl.getProductById(id);
         return ResponseEntity.ok(product);
     }
 
     @Operation(summary = "Создать новый продукт", description = "Создать новый продукт с указанными данными.")
     @PostMapping
-    public ResponseEntity<Product> createProduct(@Valid @Parameter(description = "Продукт") @RequestBody ProductDto productDto) {
-        Product product = productFacadeImpl.saveProduct(productDto);
+    public ResponseEntity<ProductDto> createProduct(@Valid @Parameter(description = "Продукт") @RequestBody ProductDto productDto) {
+        ProductDto product = productFacadeImpl.saveProduct(productDto);
         return ResponseEntity.ok(product);
     }
 
     @Operation(summary = "Обновить существующий продукт", description = "Обновить данные существующего продукта по его ID.")
     @PutMapping
-    public ResponseEntity<Product> updateProduct(@Valid @Parameter(description = "Продукт") @RequestBody ProductDto productDetails) {
-        Product updatedProduct = productFacadeImpl.updateProduct(productDetails);
+    public ResponseEntity<ProductDto> updateProduct(@Valid @Parameter(description = "Продукт") @RequestBody ProductDto productDetails) {
+        ProductDto updatedProduct = productFacadeImpl.updateProduct(productDetails);
         return ResponseEntity.ok(updatedProduct);
     }
 
@@ -80,8 +79,8 @@ public class ProductController {
 
     @Operation(summary = "Поиск продуктов по имени", description = "Поиск продуктов по указанному имени.")
     @GetMapping("/search")
-    public ResponseEntity<List<Product>> findProductsByName(@Parameter(description = "Имя продукта") @RequestParam String name) {
-        List<Product> products = productFacadeImpl.findProductsByName(name);
+    public ResponseEntity<List<ProductDto>> findProductsByName(@Parameter(description = "Имя продукта") @RequestParam String name) {
+        List<ProductDto> products = productFacadeImpl.findProductsByName(name);
         return ResponseEntity.ok(products);
     }
 }

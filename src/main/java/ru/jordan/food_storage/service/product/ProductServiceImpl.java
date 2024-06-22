@@ -9,12 +9,13 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.jordan.food_storage.dto.ProductDto;
+import ru.jordan.food_storage.mapper.ProductMapper;
 import ru.jordan.food_storage.model.Product;
 import ru.jordan.food_storage.repository.ProductRepository;
-import ru.jordan.food_storage.service.product.ProductService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -25,39 +26,41 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final ModelMapper modelMapper;
+    private final ProductMapper productMapper;
     @Override
     @Transactional
     @CacheEvict(allEntries = true)
-    public Product createProduct(ProductDto productDto) {
+    public ProductDto createProduct(ProductDto productDto) {
         if (productRepository.existsByName(productDto.getName())) {
             throw new RuntimeException("Категория с таким именем уже существует");
         }
 
         Product Product = modelMapper.map(productDto, Product.class);
+        Product saveProduct = productRepository.save(Product);
 
-        return productRepository.save(Product);
+        return productMapper.productToProductDto(saveProduct);
     }
 
     @Override
     @Cacheable(key = "#id")
     @Transactional(readOnly = true)
-    public Product getProductById(Long id) {
+    public ProductDto getProductById(Long id) {
         Optional<Product> ProductOptional = productRepository.findById(id);
-        return ProductOptional.orElse(null);
+        return ProductOptional.map(productMapper::productToProductDto).orElse(null);
     }
 
     @Override
     @Transactional
     @CacheEvict(allEntries = true)
-    public Product updateProduct(ProductDto productDto) {
+    public ProductDto updateProduct(ProductDto productDto) {
         Optional<Product> optionalProduct = productRepository.findById(productDto.getId());
 
         if (optionalProduct.isPresent()) {
             Product existingProduct = optionalProduct.get();
 
             modelMapper.map(productDto, existingProduct);
-
-            return productRepository.save(existingProduct);
+            Product updateProduct = productRepository.save(existingProduct);
+            return productMapper.productToProductDto(updateProduct);
         } else {
             throw new IllegalArgumentException("Product with id " + productDto.getId() + " not found");
         }
@@ -80,18 +83,25 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional(readOnly = true)
     @Cacheable
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductDto> getAllProducts() {
+        List<Product> products = productRepository.findAll();
+        return products.stream()
+                .map(productMapper::productToProductDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     @Transactional(readOnly = true)
     @Cacheable
-    public List<Product> findProductsByName(String name) {
+    public List<ProductDto> findProductsByName(String name) {
+        List<Product> products;
         if (name == null || name.trim().isEmpty()) {
-            return productRepository.findAll();
+            products = productRepository.findAll();
         } else {
-            return productRepository.findByNameContainingNative(name);
+            products = productRepository.findByNameContainingNative(name);
         }
+        return products.stream()
+                .map(productMapper::productToProductDto)
+                .collect(Collectors.toList());
     }
 }

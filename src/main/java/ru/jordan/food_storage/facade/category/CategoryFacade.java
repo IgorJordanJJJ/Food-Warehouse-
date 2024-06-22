@@ -1,7 +1,6 @@
 package ru.jordan.food_storage.facade.category;
 
 import ru.jordan.food_storage.dto.CategoryDto;
-import ru.jordan.food_storage.model.Category;
 
 import java.util.List;
 
@@ -11,21 +10,21 @@ public interface CategoryFacade {
      * Получить все категории.
      * @return список всех категорий
      */
-    List<Category> getAllCategories();
+    List<CategoryDto> getAllCategories();
 
     /**
      * Получить категорию по ID.
      * @param id ID категории
      * @return Optional с категорией, или пустой, если категория не найдена
      */
-    Category getCategoryById(Long id);
+    CategoryDto getCategoryById(Long id);
 
     /**
      * Сохранить новую категорию.
      * @param categoryDto данные для создания категории
      * @return сохраненная категория
      */
-    Category saveCategory(CategoryDto categoryDto);
+    CategoryDto saveCategory(CategoryDto categoryDto);
 
     /**
      * Удалить категорию по ID.
@@ -39,7 +38,7 @@ public interface CategoryFacade {
      * @param name часть имени для поиска категорий
      * @return список категорий, найденных по имени
      */
-    List<Category> findCategoriesByName(String name);
+    List<CategoryDto> findCategoriesByName(String name);
 
     /**
      * Обновление существующей категории.
@@ -47,5 +46,5 @@ public interface CategoryFacade {
      * @return обновленная категория
      * @throws IllegalArgumentException если категория с указанным ID не найдена
      */
-    Category updateCategory(CategoryDto category);
+    CategoryDto updateCategory(CategoryDto category);
 }

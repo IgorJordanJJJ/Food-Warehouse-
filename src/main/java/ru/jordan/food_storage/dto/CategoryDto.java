@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_DEFAULT;
@@ -20,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_DEFAULT;
 @Setter
 @JsonInclude(NON_DEFAULT)
 @Schema(description = "Категория продукта")
-public class CategoryDto {
+public class CategoryDto implements Serializable {
 
     @Schema(description = "Идентификатор категории", example = "1")
     private Long id;

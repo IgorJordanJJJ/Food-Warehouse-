@@ -13,6 +13,11 @@ server:
       force-response: 'true'
 
 spring:
+  cache:
+    type: ${CACHE_TYPE}
+  devtools:
+    restart:
+      enabled: false
   application:
     name: food_storage
   datasource:
@@ -63,3 +68,7 @@ logging:
     ru.jordan.food_storage: ${LOGGING_LEVEL_FOOD_STORAGE}
   swagger-ui:
     docExpansion: none
+
+appconfig:
+  cache:
+    enabled: ${CACHE_ENABLE}
