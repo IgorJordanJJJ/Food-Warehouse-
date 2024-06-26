@@ -9,5 +9,5 @@ import ru.jordan.food_storage.model.Category;
 public interface CategoryMapper {
 
     CategoryDto categoryToCategoryDto(Category category);
-    Category categoryDtoToCategory(CategoryDto categoryDto);
+//    Category categoryDtoToCategory(CategoryDto categoryDto);
 }

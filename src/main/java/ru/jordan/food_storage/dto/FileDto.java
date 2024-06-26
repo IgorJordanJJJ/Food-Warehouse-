@@ -14,6 +14,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 @Data
@@ -26,6 +27,7 @@ import java.io.Serializable;
 @Schema(description = "Файл DTO")
 public class FileDto implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 232836038145089522L;
 
     @NotBlank(message = "Заголовок файла обязателен")
