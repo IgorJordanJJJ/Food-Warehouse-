@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.jordan.food_storage.dto.FileDto;
-import ru.jordan.food_storage.service.minio.MinioService;
 import ru.jordan.food_storage.service.minio.MinioServiceImpl;
 
 import java.io.InputStream;
@@ -13,7 +12,7 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class MinioFacadeImpl implements MinioService {
+public class MinioFacadeImpl implements CategoryFacade {
 
     private final MinioServiceImpl minioService;
     @Override
@@ -38,7 +37,7 @@ public class MinioFacadeImpl implements MinioService {
 
     @Override
     public String generatePresignedUrl(String filename) {
-        return minioService.generatePresignedUrl(filename);
+        return minioService.generatePresignedUrlMinio(filename);
     }
 
     @Override

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package category;
+
+import "model/Category.proto";
+
+// Service definition
+service CategoryService {
+  // Create a new category
+  rpc CreateCategory(CategoryRequest) returns (CategoryResponseWithException);
+  // Get a category by ID
+  rpc GetCategory(CategoryIdRequest) returns (CategoryResponseWithException);
+  // Update a category
+  rpc UpdateCategory(CategoryRequest) returns (CategoryResponseWithException);
+  // Delete a category
+  rpc DeleteCategory(CategoryIdRequest) returns (CategoryResponseWithException);
+}

@@ -1,8 +1,11 @@
+import com.google.protobuf.gradle.id
+
 plugins {
     java
     id("org.springframework.boot") version "3.3.0"
     id("io.spring.dependency-management") version "1.1.5"
     id("com.netflix.dgs.codegen") version "6.2.1"
+    id("com.google.protobuf") version "0.9.4"
 }
 
 group = "ru.jordan"
@@ -24,6 +27,30 @@ repositories {
     mavenCentral()
 }
 
+extra["grpcVersion"] = "1.64.0"
+extra["protobufVersion"] = "3.25.3"
+
+protobuf{
+    protoc {
+        artifact = "com.google.protobuf:protoc:${property("protobufVersion")}"
+    }
+    plugins {
+        id("grpc") {
+            artifact = "io.grpc:protoc-gen-grpc-java:${property("grpcVersion")}"
+        }
+    }
+    generateProtoTasks {
+        all().forEach {task ->
+            task.plugins {
+                id("grpc") {
+                    // Указываем выходную поддиректорию для сгенерированного gRPC кода
+                    //outputSubDir = "grpc"
+                }
+            }
+        }
+    }
+}
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -33,6 +60,16 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-graphql")
     implementation("com.graphql-java:graphql-java-extended-scalars:17.0")
     implementation("com.graphql-java:graphql-java-extended-validation:22.0")
+    implementation("com.google.protobuf:protobuf-java:3.25.3")
+    implementation("net.devh:grpc-server-spring-boot-starter:3.0.0.RELEASE")
+//    implementation("io.grpc:grpc-netty:${property("grpcVersion")}")
+    implementation("io.grpc:grpc-netty-shaded:${property("grpcVersion")}")
+    implementation("io.grpc:grpc-protobuf:${property("grpcVersion")}")
+    implementation("io.grpc:grpc-stub:${property("grpcVersion")}")
+    implementation("org.apache.tomcat:tomcat-annotations-api:10.1.25")
+    implementation("net.devh:grpc-server-spring-boot-autoconfigure:2.15.0.RELEASE")
+//    implementation("jakarta.annotation:jakarta.annotation-api:3.0.0")
+    implementation("javax.annotation:javax.annotation-api:1.3.2")
 //    implementation("com.tailrocks.graphql:graphql-datetime-kickstart-spring-boot-starter:6.0.0")
 //    implementation("com.graphql-java-kickstart:graphql-spring-boot-starter:12.0.0")
 //    implementation("com.netflix.graphql.dgs.codegen:graphql-dgs-codegen-shared-core:6.2.1")

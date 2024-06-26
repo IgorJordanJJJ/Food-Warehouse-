@@ -10,6 +10,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.requests.ApiError;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -57,10 +60,28 @@ public class MinioController {
 
     @Operation(summary = "Скачивание файла", description = "Скачивает файл из хранилища MinIO по его имени.")
     @GetMapping("/download/{filename}")
-    public ResponseEntity<byte[]> downloadFile(@PathVariable String filename) {
+    public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable String filename) {
         try (InputStream inputStream = minioFacadeImpl.downloadFile(filename)) {
             byte[] bytes = inputStream.readAllBytes();
-            return ResponseEntity.ok().contentType(MediaType.APPLICATION_OCTET_STREAM).body(bytes);
+            ByteArrayResource resource = new ByteArrayResource(bytes);
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_OCTET_STREAM).body(resource);
+        } catch (IOException e) {
+            throw new ResponseStatusException(500, "Error downloading file", e);
+        }
+    }
+
+    @Operation(summary = "Скачивание файла", description = "Скачивает файл из хранилища MinIO по его имени.")
+    @GetMapping("/download/file/{filename}")
+    public ResponseEntity<ByteArrayResource> onlyDownloadFile(@PathVariable String filename) {
+        try (InputStream inputStream = minioFacadeImpl.downloadFile(filename)) {
+            byte[] bytes = inputStream.readAllBytes();
+            ByteArrayResource resource = new ByteArrayResource(bytes);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentDisposition(ContentDisposition.builder("attachment").filename(filename).build());
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .body(resource);
         } catch (IOException e) {
             throw new ResponseStatusException(500, "Error downloading file", e);
         }

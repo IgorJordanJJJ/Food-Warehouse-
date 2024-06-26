@@ -1,5 +1,6 @@
 package ru.jordan.food_storage.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -21,6 +22,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Schema(description = "Файл DTO")
 public class FileDto implements Serializable {
 
@@ -35,6 +37,7 @@ public class FileDto implements Serializable {
     @Schema(description = "Описание файла", example = "Документ для ознакомления")
     private String description;
 
+    @SuppressWarnings("java:S1948")
     @NotNull(message = "Файл обязателен")
     @Schema(description = "Файл", implementation = MultipartFile.class)
     private MultipartFile file;

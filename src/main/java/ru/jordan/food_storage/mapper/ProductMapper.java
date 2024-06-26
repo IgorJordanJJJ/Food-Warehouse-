@@ -5,7 +5,7 @@ import ru.jordan.food_storage.dto.ProductDto;
 import ru.jordan.food_storage.model.Product;
 
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface ProductMapper {
     ProductDto productToProductDto(Product Product);
     Product productDtoToProduct(ProductDto ProductDto);

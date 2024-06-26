@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package category;
+
+import "model/ErrorCode.proto";
+
+// Message for exception response
+message ExceptionResponse {
+  ErrorCode code = 1; // Error code
+  string message = 2; // Error message
+}

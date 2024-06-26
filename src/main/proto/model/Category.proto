@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package category;
+
+import "google/protobuf/timestamp.proto";
+import "model/ExceptionResponse.proto";
+
+option java_multiple_files = true;
+option java_package = "com.example.category";
+option java_outer_classname = "CategoryProto";
+option objc_class_prefix = "CAT";
+
+// Category message
+message Category {
+  int64 id = 1; // Идентификатор категории
+  string name = 2; // Название категории
+  string description = 3; // Описание категории
+  google.protobuf.Timestamp createdDate = 4; // Дата создания категории
+  google.protobuf.Timestamp lastUpdatedDate = 5; // Дата последнего обновления категории
+  bool active = 6; // Статус активности категории
+}
+
+// Request message for creating or updating a category
+message CategoryRequest {
+  int64 id = 1; // Идентификатор категории (optional for creation)
+  string name = 2; // Название категории
+  string description = 3; // Описание категории
+  bool active = 4; // Статус активности категории
+}
+
+// Response message for category operations
+message CategoryResponse {
+  Category category = 1; // Category message
+}
+
+// Request message for getting or deleting a category by ID
+message CategoryIdRequest {
+  int64 id = 1; // Идентификатор категории
+}
+
+// Response message which includes exception handling
+message CategoryResponseWithException {
+  oneof response {
+    CategoryResponse categoryResponse = 1; // Successful response
+    ExceptionResponse exceptionResponse = 2; // Exception response
+  }
+}

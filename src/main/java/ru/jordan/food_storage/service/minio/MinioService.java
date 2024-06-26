@@ -39,7 +39,7 @@ public interface MinioService {
      * @param filename имя файла
      * @return предподписанный URL
      */
-    String generatePresignedUrl(String filename);
+    String generatePresignedUrlMinio(String filename);
 
     /**
      * Получение списка всех файлов в Minio.

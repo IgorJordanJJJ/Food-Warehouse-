@@ -72,3 +72,7 @@ logging:
 appconfig:
   cache:
     enabled: ${CACHE_ENABLE}
+
+grpc:
+  server:
+    port: ${GRPC_PORT}

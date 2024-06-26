@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.jordan.food_storage.dto.FileDto;
 
 import java.io.InputStream;
@@ -50,11 +51,13 @@ public class MinioServiceImpl implements MinioService {
                             .contentType(file.getContentType())
                             .build());
 
-            fileDto.setFilename(filename);
-            fileDto.setSize(file.getSize());
-            fileDto.setUrl(generatePresignedUrl(filename));
-
-            return fileDto;
+            return FileDto.builder()
+                    .title(fileDto.getTitle())
+                    .description(fileDto.getDescription())
+                    .size(fileDto.getFile().getSize())
+                    .url(getPreSignedUrlApp(fileDto.getFile().getOriginalFilename()))
+                    .filename(fileDto.getFile().getOriginalFilename())
+                    .build();
         } catch (Exception e) {
             throw new RuntimeException("Error while uploading file to Minio", e);
         }
@@ -95,8 +98,7 @@ public class MinioServiceImpl implements MinioService {
         }
     }
 
-    @Override
-    public String generatePresignedUrl(String filename) {
+    public String generatePresignedUrlMinio(String filename) {
         try {
             return minioClient.getPresignedObjectUrl(
                     GetPresignedObjectUrlArgs.builder()
@@ -121,7 +123,7 @@ public class MinioServiceImpl implements MinioService {
                 FileDto fileDto = FileDto.builder()
                         .filename(item.objectName())
                         .size(item.size())
-                        .url(generatePresignedUrl(item.objectName()))
+                        .url(generatePresignedUrlMinio(item.objectName()))
                         .build();
                 fileDtos.add(fileDto);
             }
@@ -129,6 +131,11 @@ public class MinioServiceImpl implements MinioService {
         } catch (Exception e) {
             throw new RuntimeException("Error while listing files in Minio", e);
         }
+    }
+
+    private String getPreSignedUrlApp(String filename) {
+        String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
+        return baseUrl.concat("/minio/download/").concat(filename);
     }
 
 }
