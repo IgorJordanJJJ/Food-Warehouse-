@@ -10,10 +10,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 @SpringBootApplication
 @EnableCaching
 public class FoodStorageApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(FoodStorageApplication.class, args);
     }
-
-
 }

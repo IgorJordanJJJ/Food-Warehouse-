@@ -16,14 +16,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_DEFAULT;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
 @Entity
 @Data
-@JsonInclude(NON_DEFAULT)
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @Schema(description = "Категория продукта")
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "category",
@@ -47,16 +45,16 @@ public class Category implements Serializable {
     private String description;
 
     @CreatedDate
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "UTC")
     @Schema(description = "Дата создания категории", example = "2024-01-01T12:00:00")
     private LocalDateTime createdDate;
 
     @LastModifiedDate
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "UTC")
     @Schema(description = "Дата последнего обновления категории", example = "2024-01-01T12:00:00")
     private LocalDateTime lastUpdatedDate;
 
     @NotNull(message = "Статус активности категории обязателен")
     @Schema(description = "Статус активности категории", example = "true")
-    private boolean active;
+    private Boolean active;
 }

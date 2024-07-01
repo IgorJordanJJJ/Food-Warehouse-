@@ -152,7 +152,7 @@ public class CategoryGrpcService extends CategoryServiceGrpc.CategoryServiceImpl
                 .setDescription(category.getDescription())
                 .setCreatedDate(createdDate)
                 .setLastUpdatedDate(lastUpdatedDate)
-                .setActive(category.isActive())
+                .setActive(category.getActive())
                 .build();
     }
 }

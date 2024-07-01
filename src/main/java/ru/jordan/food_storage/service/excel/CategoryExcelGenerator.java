@@ -97,7 +97,7 @@ public class CategoryExcelGenerator {
             createCell(row, columnCount++, category.getDescription(), style);
             createCell(row, columnCount++, category.getCreatedDate(), style);
             createCell(row, columnCount++, category.getLastUpdatedDate(), style);
-            createCell(row, columnCount++, category.isActive(), style);
+            createCell(row, columnCount++, category.getActive(), style);
         }
 
     }

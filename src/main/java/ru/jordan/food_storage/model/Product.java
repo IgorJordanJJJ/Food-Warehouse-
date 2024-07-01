@@ -15,14 +15,12 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_DEFAULT;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
 @Entity
 @Data
-@JsonInclude(NON_DEFAULT)
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @EntityListeners(AuditingEntityListener.class)
 @Schema(description = "Детали продукта")
 @Table(name = "product",

@@ -14,7 +14,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_DEFAULT;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_DEFAULT;
 @Getter
 @Setter
 @Data
-@JsonInclude(NON_DEFAULT)
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @Schema(description = "Детали продукта")
 public class ProductDto implements Serializable {
 

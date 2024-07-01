@@ -13,6 +13,8 @@ server:
       force-response: 'true'
 
 spring:
+  jackson:
+    time-zone: UTC
   cache:
     type: ${CACHE_TYPE}
   devtools:
