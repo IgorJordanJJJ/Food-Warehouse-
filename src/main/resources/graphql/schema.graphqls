@@ -25,7 +25,7 @@ type Category {
 }
 
 # Тип для ввода при создании или обновлении Category
-input CategoryInput {
+input CategoryInputCreate {
     "Название категории"
     name: String!
 
@@ -34,6 +34,21 @@ input CategoryInput {
 
     "Статус активности категории"
     active: Boolean!
+}
+
+# Тип для ввода при создании или обновлении Category
+input CategoryInputUpdate {
+    "Идентификатор категории"
+    id: Long
+
+    "Название категории"
+    name: String
+
+    "Описание категории"
+    description: String
+
+    "Статус активности категории"
+    active: Boolean
 }
 
 # Тип GraphQL для Product
@@ -140,7 +155,7 @@ input ProductInput {
 
 type Query {
     "Получить категорию по ID"
-    getCategoryById(id: Long!): Category
+    getCategoryById(id: ID!): Category
 
     "Получить категорию по названию"
     findCategoriesByName(name: String!): [Category]
@@ -149,7 +164,7 @@ type Query {
     getAllCategories: [Category]
 
     "Получить продукт по ID"
-    getProductById(id: Long!): Product
+    getProductById(id: ID!): Product
 
     "Получить продукты по названию"
     findProductsByName(name: String!): [Product]
@@ -160,13 +175,13 @@ type Query {
 
 type Mutation {
     "Создать новую категорию"
-    createCategory(input: CategoryInput!): Category
+    createCategory(input: CategoryInputCreate!): Category
 
     "Обновить существующую категорию"
-    updateCategory(input: CategoryInput!): Category
+    updateCategory(input: CategoryInputUpdate!): Category
 
     "Удалить категорию по ID"
-    deleteCategory(id: Long!): Boolean
+    deleteCategory(id: ID!): Boolean
 
     "Создать новый продукт"
     createProduct(input: ProductInput!): Product
@@ -175,7 +190,7 @@ type Mutation {
     updateProduct(input: ProductInput!): Product
 
     "Удалить продукт по ID"
-    deleteProduct(id: Long!): Boolean
+    deleteProduct(id: ID!): Boolean
 }
 
 

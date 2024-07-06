@@ -7,6 +7,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
@@ -14,9 +15,11 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
+import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import ru.jordan.food_storage.controller.beans.TestBeans;
 import ru.jordan.food_storage.dto.CategoryDto;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -25,32 +28,51 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 @Testcontainers
-@SpringBootTest
+@SpringBootTest(classes = TestBeans.class)
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @Sql(scripts = "classpath:db/data/category/data_category.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 @Sql(scripts = "classpath:db/data/category/cleanup_data_categories.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class CategoryControllerTest {
 
     private ObjectMapper objectMapper;
+    private static final String MINIO_IMAGE = "minio/minio";
+//    @Container
+//    @ServiceConnection
+//    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16").withEnv("TZ", "UTC");
+
     @Container
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16").withEnv("TZ", "UTC");
+    public static GenericContainer<?> minioContainer = new GenericContainer<>(MINIO_IMAGE)
+            .withEnv("MINIO_ROOT_USER", "minioadmin")
+            .withEnv("MINIO_ROOT_PASSWORD", "minioadmin")
+            .withCommand("server /data")
+            .withExposedPorts(9000);
 
     @BeforeEach
     void setup() {
         objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
+        minioContainer.start();
+//        postgres.start(); // Запуск контейнера перед всеми тестами
     }
 
     @DynamicPropertySource
-    static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgres::getJdbcUrl);
-        registry.add("spring.datasource.username", postgres::getUsername);
-        registry.add("spring.datasource.password", postgres::getPassword);
-        registry.add("spring.jpa.generate-ddl", () -> true);
+    static void registerMinioProperties(DynamicPropertyRegistry registry) {
+        String minioUrl = "http://" + minioContainer.getHost() + ":" + minioContainer.getFirstMappedPort();
+        registry.add("minio.url", () -> minioUrl);
+        registry.add("minio.access-key", () -> "minioadmin");
+        registry.add("minio.secret-key", () -> "minioadmin");
     }
+
+//    @DynamicPropertySource
+//    static void configureProperties(DynamicPropertyRegistry registry) {
+//        registry.add("spring.datasource.url", postgres::getJdbcUrl);
+//        registry.add("spring.datasource.username", postgres::getUsername);
+//        registry.add("spring.datasource.password", postgres::getPassword);
+//        registry.add("spring.jpa.generate-ddl", () -> true);
+//    }
 
     @Autowired
     private MockMvc mockMvc;
@@ -112,6 +134,7 @@ class CategoryControllerTest {
 
         mockMvc.perform(get("/category/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.name").value("Category1"))
                 .andExpect(jsonPath("$.description").value("Description1"))
@@ -143,7 +166,7 @@ class CategoryControllerTest {
     @Order(2)
     void shouldUpdateCategory() throws Exception {
 
-        Long categoryId = 1L;
+        long categoryId = 1L;
 
         CategoryDto categoryDto = CategoryDto.builder()
                 .id(categoryId)

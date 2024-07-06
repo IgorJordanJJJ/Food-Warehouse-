@@ -109,7 +109,7 @@ public class MinioController {
         }
     }
 
-    @Operation(summary = "Генерация пресайнед URL", description = "Генерирует пресайнед URL для доступа к файлу в хранилище MinIO.")
+    @Operation(summary = "Генерация ссылки URL", description = "Генерирует ссылки URL для доступа к файлу в хранилище MinIO.")
     @GetMapping("/presigned-url/{filename}")
     public ResponseEntity<String> generatePresignedUrl(@PathVariable String filename) {
         try {

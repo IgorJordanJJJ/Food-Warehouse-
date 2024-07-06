@@ -107,6 +107,7 @@ dependencies {
     testImplementation("org.mockito:mockito-junit-jupiter:5.12.0")
     testImplementation("org.testcontainers:testcontainers:1.19.8")
     testImplementation("org.testcontainers:postgresql:1.19.8")
+    testImplementation("org.testcontainers:minio:1.19.8")
     testImplementation("org.testcontainers:junit-jupiter:1.19.8")
     testImplementation("org.springframework.boot:spring-boot-testcontainers:3.3.0")
                 //testImplementation("org.slf4j:slf4j-simple:2.0.12")
